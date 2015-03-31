@@ -59,6 +59,10 @@ public class ListingPanel extends JPanel implements Runnable {
 	public void grabPlugins() throws IOException {
 		File dir = new File("plugins");
 		System.out.println(dir.getAbsolutePath());
+		// If directory doesn't exist, create it.
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
 		File [] files = dir.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
 		        return name.endsWith(".jar");
@@ -66,8 +70,10 @@ public class ListingPanel extends JPanel implements Runnable {
 		});
 		DefaultListModel<IExecutionPane> model = new DefaultListModel<IExecutionPane>();
 		dataList.setModel(model);
-		for (File jarfile : files) {
-		    addPlugin(jarfile);
+		if (files != null) {
+			for (File jarfile : files) {
+				addPlugin(jarfile);
+			}
 		}
 		registerPath(Paths.get(dir.getAbsolutePath()));
 	}
