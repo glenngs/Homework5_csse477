@@ -3,6 +3,7 @@ package edu.rosehulman.plugin.counter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.OutputStream;
+import java.io.PrintStream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,6 +18,7 @@ public class Plugin extends JPanel implements IExecutionPane {
 	private JLabel label;
 	private String name;
 	private OutputStream statusAreaStream;
+	private PrintStream printStream;
 	
 	
 	public Plugin(String name) {
@@ -30,6 +32,7 @@ public class Plugin extends JPanel implements IExecutionPane {
 			public void actionPerformed(ActionEvent e) {
 				count += 1;
 				label.setText(Integer.toString(count));
+				printStream.print("Button Pressed! Counter at: " + count +"\n");
 			}
 		});
 		this.add(button);
@@ -46,7 +49,9 @@ public class Plugin extends JPanel implements IExecutionPane {
 
 	
 	public void setStatusStream(OutputStream s) {
-		this.statusAreaStream = s;		
+		// TODO: Change OutputStream to PrintStream. So much nicer....
+		this.statusAreaStream = s;	
+		this.printStream = new PrintStream(this.statusAreaStream);
 	}
 	
 	private static void createAndShowGUI() {
@@ -57,7 +62,6 @@ public class Plugin extends JPanel implements IExecutionPane {
         frame.add(testPanel);
         Counter c = new Counter("test name");
         c.start(testPanel);
-        
         frame.pack();
         frame.setVisible(true);
     }
