@@ -1,0 +1,45 @@
+package edu.rosehulman.plugin.counter;
+
+import java.awt.event.ActionEvent;
+import java.io.OutputStream;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import edu.rosehulman.pluginmanager.protocol.IExecutionPane;
+
+public class Counter extends JPanel implements IExecutionPane {
+
+	private JPanel parent;
+	private int count;
+	private JLabel label;
+	
+	public Counter() {
+		this.count = 0;
+		this.label = new JLabel(Integer.toString(count));
+		this.add(label);
+		
+		JButton button = new JButton("Increment Counter");
+		button.addActionListener(new ActionListiner() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+	}
+
+	public void start (JPanel p) {
+		this.parent = p;
+		this.parent.add(this);
+	}
+	
+	public void pause() {
+		this.parent.remove(this);		
+	}
+
+	public void setStatusStream(OutputStream s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

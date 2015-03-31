@@ -1,0 +1,10 @@
+package edu.rosehulman.pluginmanager;
+
+import javax.swing.JPanel;
+
+public class ListingPanel extends JPanel {
+	public ListingPanel() {
+		JButton button = new JButton("test");   
+	    add(button); 
+	}
+}

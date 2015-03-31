@@ -1,0 +1,32 @@
+package edu.rosehulman.pluginmanager;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class Main {
+	public JListDemo() {
+
+        setSize(new Dimension(300, 300));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+        final JLabel label = new JLabel("Update");
+        String[] data = { "one", "two", "three", "four" };
+        final JList dataList = new JList(data);
+
+        dataList.addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent arg0) {
+                if (!arg0.getValueIsAdjusting()) {
+                  label.setText(dataList.getSelectedValue().toString());
+                }
+            }
+        });
+        add(dataList);
+        add(label);
+
+        setVisible(true);
+
+    }
+
+}

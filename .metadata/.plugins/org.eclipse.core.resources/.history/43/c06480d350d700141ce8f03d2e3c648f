@@ -1,0 +1,5 @@
+package edu.rosehulman.pluginmanager.protocol;
+
+public interface IExecutionPane extends JFrame {
+
+}

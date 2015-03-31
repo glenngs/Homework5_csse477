@@ -1,0 +1,35 @@
+package edu.rosehulman.pluginmanager;
+
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+public class ListingPanel extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public ListingPanel() {
+
+        final JLabel label = new JLabel("Update");
+        final JList<IExecutionPane> dataList = new JList();
+
+        dataList.addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent arg0) {
+                if (!arg0.getValueIsAdjusting()) {
+                  label.setText(dataList.getSelectedValue().toString());
+                }
+            }
+        });
+        add(dataList);
+        add(label);
+
+
+    }
+
+}

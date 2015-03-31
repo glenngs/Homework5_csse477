@@ -1,0 +1,29 @@
+package edu.rosehulman.plugin.counter;
+
+import java.io.OutputStream;
+
+import edu.rosehulman.pluginmanager.protocol.IExecutionPane;
+
+public class Counter implements IExecutionPane extends JPanel {
+
+	public void render() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void pause() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void resume() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setStatusStream(OutputStream s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

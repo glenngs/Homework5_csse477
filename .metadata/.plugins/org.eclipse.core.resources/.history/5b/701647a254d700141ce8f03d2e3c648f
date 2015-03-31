@@ -1,0 +1,43 @@
+package edu.rosehulman.pluginmanager;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+public class ListingPanel extends JPanel {
+
+	public ListingPanel() {
+
+        final JLabel label = new JLabel("Update");
+        String[] data = { "one", "two", "three", "four" };
+        final JList dataList = new JList(data);
+
+        dataList.addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent arg0) {
+                if (!arg0.getValueIsAdjusting()) {
+                  label.setText(dataList.getSelectedValue().toString());
+                }
+            }
+        });
+        add(dataList);
+        add(label);
+
+
+    }
+
+}

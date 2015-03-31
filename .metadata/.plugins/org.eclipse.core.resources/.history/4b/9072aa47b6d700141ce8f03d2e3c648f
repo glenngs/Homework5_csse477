@@ -1,0 +1,87 @@
+package edu.rosehulman.pluginmanager;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.nio.file.WatchService;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import java.nio.file.*;
+
+import static java.nio.file.StandardWatchEventKinds.*;
+import static java.nio.file.LinkOption.*;
+
+import java.nio.file.attribute.*;
+import java.io.*;
+import java.util.*;
+
+import edu.rosehulman.plugin.counter.Counter;
+import edu.rosehulman.pluginmanager.protocol.IExecutionPane;
+
+public class ListingPanel extends JPanel {
+
+	final JList<IExecutionPane> dataList = new JList<IExecutionPane>();
+	private final WatchService watcher;
+    private final Map<WatchKey,Path> keys;
+	
+	public ListingPanel() throws IOException {
+		this.watcher = FileSystems.getDefault().newWatchService();
+        this.keys = new HashMap<WatchKey,Path>();
+        final JLabel label = new JLabel("Update");
+        
+        grabPlugins();
+        dataList.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent arg0) {
+                if (!arg0.getValueIsAdjusting()) {
+                	//TODO Gabe, this is the method you should use to call your code
+                	label.setText(dataList.getSelectedValue().toString());
+                }
+            }
+        });
+        
+        add(dataList);
+        add(label);
+        
+        System.out.println(dataList.getModel().getSize());
+    }
+	
+	public void grabPlugins() throws IOException {
+		File dir = new File("plugins");
+		System.out.println(dir.getAbsolutePath());
+		File [] files = dir.listFiles(new FilenameFilter() {
+		    public boolean accept(File dir, String name) {
+		        return name.endsWith(".jar");
+		    }
+		});
+		DefaultListModel<IExecutionPane> model = new DefaultListModel<IExecutionPane>();
+		for (File jarfile : files) {
+		    System.out.println(stripExtension(jarfile.getName()));
+		    model.addElement(new Counter());
+		}
+		dataList.setModel(model);
+		System.out.println(Paths.get("/plugins"));
+		register(Paths.get("/plugins"));
+	}
+
+	static String stripExtension (String str) {
+        if (str == null) return null;
+        int pos = str.lastIndexOf(".");
+        if (pos == -1) return str;
+        return str.substring(0, pos);
+    }
+
+	/**
+     * Register the given directory with the WatchService
+     */
+    private void register(Path dir) throws IOException {
+        WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+        keys.put(key, dir);
+    }
+    
+}

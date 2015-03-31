@@ -1,0 +1,60 @@
+package edu.rosehulman.pluginmanager;
+
+import java.io.File;
+import java.io.FilenameFilter;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import edu.rosehulman.plugin.counter.Counter;
+import edu.rosehulman.pluginmanager.protocol.IExecutionPane;
+
+public class ListingPanel extends JPanel {
+
+	JList<IExecutionPane> dataList = new JList<IExecutionPane>();
+	
+	public ListingPanel() {
+
+        final JLabel label = new JLabel("Update");
+
+        dataList.addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent arg0) {
+                if (!arg0.getValueIsAdjusting()) {
+                  label.setText(dataList.getSelectedValue().toString());
+                }
+            }
+        });
+        add(dataList);
+        add(label);
+        grabPlugins();
+        System.out.println(dataList.getModel().getSize());
+    }
+	
+	public void grabPlugins() {
+		File dir = new File("plugins");
+		System.out.println(dir.getAbsolutePath());
+		File [] files = dir.listFiles(new FilenameFilter() {
+		    public boolean accept(File dir, String name) {
+		        return name.endsWith(".jar");
+		    }
+		});
+		final DefaultListModel model = new DefaultListModel();
+		for (File jarfile : files) {
+		    System.out.println(stripExtension(jarfile.getName()));
+		    model.addElement(new Counter());
+		}
+		dataList = new JList(model);
+	}
+
+	static String stripExtension (String str) {
+        if (str == null) return null;
+        int pos = str.lastIndexOf(".");
+        if (pos == -1) return str;
+        return str.substring(0, pos);
+    }
+}

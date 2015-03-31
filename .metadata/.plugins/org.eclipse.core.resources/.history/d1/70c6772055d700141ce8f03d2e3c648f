@@ -1,0 +1,5 @@
+package edu.rosehulman.plugin.counter;
+
+public class Counter {
+
+}

@@ -1,0 +1,10 @@
+package edu.rosehulman.pluginmanager.protocol;
+
+import java.io.InputStream;
+
+public interface IExecutionPane {
+	public void render();
+	public void pause();
+	public void resume();
+	public void setStatusStream(InputStream s);
+}

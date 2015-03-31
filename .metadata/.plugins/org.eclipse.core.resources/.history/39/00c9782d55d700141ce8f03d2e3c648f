@@ -1,0 +1,7 @@
+package edu.rosehulman.plugin.counter;
+
+import edu.rosehulman.pluginmanager.protocol.IExecutionPane;
+
+public class Counter implements IExecutionPane {
+
+}
