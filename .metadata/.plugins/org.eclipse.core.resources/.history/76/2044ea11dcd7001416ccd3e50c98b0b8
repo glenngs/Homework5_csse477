@@ -42,9 +42,6 @@ public class ListingPanel extends JPanel implements Runnable {
                 	//TODO Gabe, this is the method you should use to call your code
                 	if(dataList.getSelectedValue() != null) {
                 		label.setText(dataList.getSelectedValue().toString());
-                	} else {
-                		//This means that the selected plugin was deleted.  I'm not sure what to do in this case but we should handle it.
-                		label.setText("None");
                 	}
                 }
             }
