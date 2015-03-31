@@ -109,6 +109,7 @@ public class ListingPanel extends JPanel implements Runnable {
 			URLClassLoader loader = new URLClassLoader(new URL[] { fileURL });
 			Class<?> c = loader.loadClass(className);
 			Plugin p = (Plugin) c.getConstructor(java.lang.String.class).newInstance(pluginName);
+			p.setStatusStream(statusArea);
 //			Class<?> c = Class.forName(className, true, loader);
 //			Plugin plug = (Plugin) c.newInstance();
 			((DefaultListModel<IExecutionPane>) dataList.getModel())
