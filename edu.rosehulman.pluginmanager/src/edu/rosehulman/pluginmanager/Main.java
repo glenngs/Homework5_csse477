@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class Main {
     public static void addComponentsToPane(Container pane) throws IOException {
@@ -16,15 +17,24 @@ public class Main {
         JLabel center = new JLabel("Main section (Gabe)");
         center.setPreferredSize(new Dimension(400, 400));
         pane.add(center, BorderLayout.CENTER);
-         
-        ListingPanel listingPanel = new ListingPanel();
+
+        JTextArea text = new JTextArea();
+        text.setPreferredSize(new Dimension(200,200));
+        text.setEditable(false);
+        pane.add(text, BorderLayout.PAGE_END);
+        
+        OutputStream textStream = new TextAreaOutputStream(text);
+
+        
+        ListingPanel listingPanel = new ListingPanel(textStream);
         listingPanel.setPreferredSize(new Dimension(200,200));
         (new Thread(listingPanel)).start();
         pane.add(listingPanel, BorderLayout.LINE_START);
          
-        JLabel text = new JLabel("Text output (Ben)");
-        text.setPreferredSize(new Dimension(200, 200));
-        pane.add(text, BorderLayout.PAGE_END);
+//        JLabel text = new JLabel("Text output (Ben)");
+//        text.setPreferredSize(new Dimension(200, 200));
+//        pane.add(text, BorderLayout.PAGE_END);
+        
     }
      
     /**

@@ -16,6 +16,7 @@ public class Plugin extends JPanel implements IExecutionPane {
 	private int count;
 	private JLabel label;
 	private String name;
+	private OutputStream statusAreaStream;
 	
 	
 	public Plugin(String name) {
@@ -43,9 +44,9 @@ public class Plugin extends JPanel implements IExecutionPane {
 		this.parent.remove(this);		
 	}
 
+	
 	public void setStatusStream(OutputStream s) {
-		// TODO Ben Auto-generated method stub
-		
+		this.statusAreaStream = s;		
 	}
 	
 	private static void createAndShowGUI() {
@@ -61,19 +62,19 @@ public class Plugin extends JPanel implements IExecutionPane {
         frame.setVisible(true);
     }
 	
+	public static void main(String[] args) {
+        //Schedule a job for the event dispatch thread:
+        //creating and showing this application's GUI.
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
 
+	@Override
 	// This should always return the name given to the constructor
 	public String toString() {
 		return name;
-	}
-	
-	public static void main(String[] args) {
-		//Schedule a job for the event dispatch thread:
-		//creating and showing this application's GUI.
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				createAndShowGUI();
-			}
-		});
 	}
 }
