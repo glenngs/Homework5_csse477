@@ -1,9 +1,22 @@
 package edu.rosehulman.pluginmanager;
 
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
+import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -11,15 +24,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import java.nio.file.*;
-
-import static java.nio.file.StandardWatchEventKinds.*;
-import static java.nio.file.LinkOption.*;
-
-import java.nio.file.attribute.*;
-import java.io.*;
-import java.util.*;
 
 import edu.rosehulman.plugin.counter.Counter;
 import edu.rosehulman.pluginmanager.protocol.IExecutionPane;
@@ -29,8 +33,10 @@ public class ListingPanel extends JPanel implements Runnable {
 	final JList<IExecutionPane> dataList = new JList<IExecutionPane>();
 	private final WatchService watcher;
     private final Map<WatchKey,Path> keys;
+    private final OutputStream statusArea;
 	
-	public ListingPanel() throws IOException {
+	public ListingPanel(final OutputStream statusArea) throws IOException {
+		this.statusArea = statusArea;
 		this.watcher = FileSystems.getDefault().newWatchService();
         this.keys = new HashMap<WatchKey,Path>();
         final JLabel label = new JLabel("Update");

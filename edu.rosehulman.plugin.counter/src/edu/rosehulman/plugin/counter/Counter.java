@@ -17,6 +17,7 @@ public class Counter extends JPanel implements IExecutionPane {
 	private int count;
 	private JLabel label;
 	private String name;
+	private OutputStream statusAreaStream;
 	
 	//The constructor should take 1 argument, the name of the file
 	public Counter(String name) {
@@ -45,8 +46,7 @@ public class Counter extends JPanel implements IExecutionPane {
 	}
 
 	public void setStatusStream(OutputStream s) {
-		// TODO Ben Auto-generated method stub
-		
+		this.statusAreaStream = s;		
 	}
 	
 	private static void createAndShowGUI() {
