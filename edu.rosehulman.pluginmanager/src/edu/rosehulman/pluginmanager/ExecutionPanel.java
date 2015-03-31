@@ -2,27 +2,23 @@ package edu.rosehulman.pluginmanager;
 
 import javax.swing.JPanel;
 
-import edu.rosehulman.pluginmanager.ListingPanel;
+import edu.rosehulman.plugin.counter.Plugin;
 import edu.rosehulman.pluginmanager.protocol.IExecutionPane;
 
 
-public class ExecutionPanel extends JPanel implements Runnable {
+public class ExecutionPanel extends JPanel{
 
 	public ExecutionPanel() {
+		
 	}
 	
-	public void getPlugin(ListingPanel list){
-		IExecutionPane selectedPlugin = list.dataList.getSelectedValue();
+	public void renderPlugin(IExecutionPane p){
+		IExecutionPane selectedPlugin = p;
 		
 		if(selectedPlugin != null)
 		{
-			
+			selectedPlugin.start(this);
 		}
-	}
-
-	public void run() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

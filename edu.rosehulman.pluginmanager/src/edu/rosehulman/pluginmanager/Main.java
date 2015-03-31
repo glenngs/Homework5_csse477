@@ -14,10 +14,14 @@ public class Main {
             return;
         }
                   
-        JLabel center = new JLabel("Main section (Gabe)");
+        //JLabel center = new JLabel("Main section (Gabe)");
+        ExecutionPanel center = new ExecutionPanel();
         center.setPreferredSize(new Dimension(400, 400));
         pane.add(center, BorderLayout.CENTER);
-
+        
+        
+        
+        
         JTextArea text = new JTextArea();
         text.setPreferredSize(new Dimension(200,200));
         text.setEditable(false);
@@ -26,7 +30,7 @@ public class Main {
         OutputStream textStream = new TextAreaOutputStream(text);
 
         
-        ListingPanel listingPanel = new ListingPanel(textStream);
+        ListingPanel listingPanel = new ListingPanel(textStream,center);
         listingPanel.setPreferredSize(new Dimension(200,200));
         (new Thread(listingPanel)).start();
         pane.add(listingPanel, BorderLayout.LINE_START);

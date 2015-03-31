@@ -38,9 +38,11 @@ public class ListingPanel extends JPanel implements Runnable {
 	private final WatchService watcher;
     private final Map<WatchKey,Path> keys;
     private final OutputStream statusArea;
+    private final ExecutionPanel executionArea;
 	
-	public ListingPanel(final OutputStream statusArea) throws IOException {
+	public ListingPanel(final OutputStream statusArea, final ExecutionPanel executionArea) throws IOException {
 		this.statusArea = statusArea;
+		this.executionArea = executionArea;
 		this.watcher = FileSystems.getDefault().newWatchService();
 		this.keys = new HashMap<WatchKey, Path>();
 		final JLabel label = new JLabel("Update");
@@ -53,6 +55,7 @@ public class ListingPanel extends JPanel implements Runnable {
 					// code
 					if (dataList.getSelectedValue() != null) {
 						label.setText(dataList.getSelectedValue().toString());
+						ListingPanel.this.executionArea.renderPlugin(dataList.getSelectedValue());
 					} else {
 						// This means that the selected plugin was deleted. I'm
 						// not sure what to do in this case but we should handle
