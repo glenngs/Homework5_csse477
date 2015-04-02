@@ -1,12 +1,16 @@
 package edu.rosehulman.pluginmanager;
 
-import javax.swing.*;
-import javax.swing.text.DefaultCaret;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.text.DefaultCaret;
 
 public class Main {
     public static void addComponentsToPane(Container pane) throws IOException {

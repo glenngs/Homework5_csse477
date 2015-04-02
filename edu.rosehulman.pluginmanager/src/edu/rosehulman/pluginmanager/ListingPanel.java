@@ -15,6 +15,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
+import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.HashMap;
@@ -33,6 +34,10 @@ import edu.rosehulman.pluginmanager.protocol.IExecutionPane;
 
 public class ListingPanel extends JPanel implements Runnable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8171411952037680280L;
 	final JList<IExecutionPane> dataList = new JList<IExecutionPane>();
 	private final WatchService watcher;
     private final Map<WatchKey,Path> keys;
@@ -186,7 +191,7 @@ public class ListingPanel extends JPanel implements Runnable {
 				e.printStackTrace();
 			}
 			for (WatchEvent<?> event : key.pollEvents()) {
-				WatchEvent.Kind kind = event.kind();
+				Kind<?> kind = event.kind();
 
 				// TBD - provide example of how OVERFLOW event is handled
 				if (kind == OVERFLOW) {
@@ -194,6 +199,7 @@ public class ListingPanel extends JPanel implements Runnable {
 				}
 
 				// Context for directory entry event is the file name of entry
+				@SuppressWarnings("unchecked")
 				WatchEvent<Path> ev = (WatchEvent<Path>) event;
 				Path name = ev.context();
 				

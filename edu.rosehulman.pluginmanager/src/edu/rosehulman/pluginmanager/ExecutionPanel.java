@@ -7,6 +7,10 @@ import edu.rosehulman.pluginmanager.protocol.IExecutionPane;
 
 public class ExecutionPanel extends JPanel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4464217608767640741L;
 	private IExecutionPane currentPlugin = null;
 
 	public ExecutionPanel() {

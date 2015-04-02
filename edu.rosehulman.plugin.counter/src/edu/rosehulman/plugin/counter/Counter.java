@@ -2,7 +2,6 @@ package edu.rosehulman.plugin.counter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.OutputStream;
 import java.io.PrintStream;
 
 import javax.swing.JButton;
@@ -13,6 +12,10 @@ import javax.swing.JPanel;
 import edu.rosehulman.pluginmanager.protocol.IExecutionPane;
 
 public class Counter extends JPanel implements IExecutionPane {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7195746257630036388L;
 	//The constructor should take 1 argument, the name of the file
 	private JPanel parent;
 	private int count;
