@@ -1,6 +1,7 @@
 package edu.rosehulman.pluginmanager;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 
 import java.awt.*;
 import java.io.IOException;
@@ -19,13 +20,14 @@ public class Main {
         center.setPreferredSize(new Dimension(400, 400));
         pane.add(center, BorderLayout.CENTER);
         
-        
-        
-        
         JTextArea text = new JTextArea();
-        text.setPreferredSize(new Dimension(200,200));
         text.setEditable(false);
-        pane.add(text, BorderLayout.PAGE_END);
+        JScrollPane jp = new JScrollPane(text);
+        jp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        jp.setPreferredSize(new Dimension(200,200));
+        DefaultCaret caret = (DefaultCaret)text.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        pane.add(jp, BorderLayout.PAGE_END);
         
         OutputStream textStream = new TextAreaOutputStream(text);
 

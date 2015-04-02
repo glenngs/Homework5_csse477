@@ -103,22 +103,24 @@ public class ListingPanel extends JPanel implements Runnable {
 		// all added jars are of that type for testing my part
 		// You need to make it so it uses reflection to get the actual class
 		// instead from the plugin
-		String className = "edu.rosehulman.plugin.counter." + pluginName;
 		
 		try {
 			URL fileURL = new URL("file:" + jarfile.getAbsolutePath());
-			System.out.println(fileURL.getPath());
+			System.out.println("Addition: " + fileURL.getPath());
 			URLClassLoader loader = new URLClassLoader(new URL[] { fileURL });
 			JarFile jf = new JarFile(jarfile.getAbsoluteFile());
 			jf.getManifest();
-			className = jf.getManifest().getMainAttributes().getValue(Attributes.Name.MAIN_CLASS);
+			String className = jf.getManifest().getMainAttributes().getValue(Attributes.Name.MAIN_CLASS);
 			Class<?> c = loader.loadClass(className);
-			Plugin p = (Plugin) c.getConstructor(java.lang.String.class).newInstance(pluginName);
+			final Plugin p = (Plugin) c.getConstructor(java.lang.String.class).newInstance(pluginName);
 			p.setStatusStream(statusArea);
-//			Class<?> c = Class.forName(className, true, loader);
-//			Plugin plug = (Plugin) c.newInstance();
-			((DefaultListModel<IExecutionPane>) dataList.getModel())
-					.addElement(p);
+			javax.swing.SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					((DefaultListModel<IExecutionPane>) dataList.getModel()).addElement(p);
+				}
+			});
+			loader.close();
+			jf.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -127,14 +129,19 @@ public class ListingPanel extends JPanel implements Runnable {
 	}
 
 	public void removePlugin(File jarfile) {
-		DefaultListModel<IExecutionPane> model = (DefaultListModel<IExecutionPane>) dataList
+		final DefaultListModel<IExecutionPane> model = (DefaultListModel<IExecutionPane>) dataList
 				.getModel();
-		String pluginName = stripExtension(jarfile.getName());
+		final String pluginName = stripExtension(jarfile.getName());
 		System.out.println("Removing plugin: " + pluginName);
 		for (int i = 0; i < model.size(); i++) {
 			if (pluginName.equals(model.get(i).toString())) {
-				System.out.println(pluginName);
-				model.remove(i);
+				final int j = i;
+				javax.swing.SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						System.out.println("Removal: "+pluginName);
+						model.remove(j);
+					}
+				});
 				break;
 			}
 		}
@@ -177,7 +184,12 @@ public class ListingPanel extends JPanel implements Runnable {
 				System.err.println("WatchKey not recognized!!");
 				continue;
 			}
-
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			for (WatchEvent<?> event : key.pollEvents()) {
 				WatchEvent.Kind kind = event.kind();
 
@@ -189,11 +201,15 @@ public class ListingPanel extends JPanel implements Runnable {
 				// Context for directory entry event is the file name of entry
 				WatchEvent<Path> ev = (WatchEvent<Path>) event;
 				Path name = ev.context();
+				
+				// TODO: OH GOD THIS IS SO UGLY
+				File jarfile = new File(dir.toString(),name.toString());
 
 				if (kind == ENTRY_CREATE) {
-					addPlugin(name.toFile());
+					removePlugin(jarfile);
+					addPlugin(jarfile);
 				} else if (kind == ENTRY_DELETE) {
-					removePlugin(name.toFile());
+					removePlugin(jarfile);
 				}
 			}
 
