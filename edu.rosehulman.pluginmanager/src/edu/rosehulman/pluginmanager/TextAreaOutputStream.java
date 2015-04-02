@@ -23,7 +23,6 @@ public class TextAreaOutputStream extends OutputStream {
 			javax.swing.SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					textArea.append(text);
-					textArea.setCaretPosition(textArea.getDocument().getLength());
 				}
 			});
 			sb.setLength(0);
