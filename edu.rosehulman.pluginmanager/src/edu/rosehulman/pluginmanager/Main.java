@@ -6,6 +6,7 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 
 public class Main {
     public static void addComponentsToPane(Container pane) throws IOException {
@@ -29,8 +30,7 @@ public class Main {
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         pane.add(jp, BorderLayout.PAGE_END);
         
-        OutputStream textStream = new TextAreaOutputStream(text);
-
+        PrintStream textStream = new PrintStream(new TextAreaOutputStream(text));
         
         ListingPanel listingPanel = new ListingPanel(textStream,center);
         listingPanel.setPreferredSize(new Dimension(200,200));

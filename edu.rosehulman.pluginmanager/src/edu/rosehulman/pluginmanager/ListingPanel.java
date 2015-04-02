@@ -8,10 +8,9 @@ import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.PrintStream;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.io.OutputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,8 +29,6 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import edu.rosehulman.plugin.counter.Counter;
-import edu.rosehulman.plugin.counter.Plugin;
 import edu.rosehulman.pluginmanager.protocol.IExecutionPane;
 
 public class ListingPanel extends JPanel implements Runnable {
@@ -39,10 +36,10 @@ public class ListingPanel extends JPanel implements Runnable {
 	final JList<IExecutionPane> dataList = new JList<IExecutionPane>();
 	private final WatchService watcher;
     private final Map<WatchKey,Path> keys;
-    private final OutputStream statusArea;
+    private final PrintStream statusArea;
     private final ExecutionPanel executionArea;
 	
-	public ListingPanel(final OutputStream statusArea, final ExecutionPanel executionArea) throws IOException {
+	public ListingPanel(final PrintStream statusArea, final ExecutionPanel executionArea) throws IOException {
 		this.statusArea = statusArea;
 		this.executionArea = executionArea;
 		this.watcher = FileSystems.getDefault().newWatchService();
@@ -53,8 +50,6 @@ public class ListingPanel extends JPanel implements Runnable {
 		dataList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
 				if (!arg0.getValueIsAdjusting()) {
-					// TODO Gabe, this is the method you should use to call your
-					// code
 					if (dataList.getSelectedValue() != null) {
 						label.setText(dataList.getSelectedValue().toString());
 						ListingPanel.this.executionArea.renderPlugin(dataList.getSelectedValue());
@@ -112,7 +107,7 @@ public class ListingPanel extends JPanel implements Runnable {
 			jf.getManifest();
 			String className = jf.getManifest().getMainAttributes().getValue(Attributes.Name.MAIN_CLASS);
 			Class<?> c = loader.loadClass(className);
-			final Plugin p = (Plugin) c.getConstructor(java.lang.String.class).newInstance(pluginName);
+			final IExecutionPane p = (IExecutionPane) c.getConstructor(java.lang.String.class).newInstance(pluginName);
 			p.setStatusStream(statusArea);
 			javax.swing.SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
@@ -206,7 +201,6 @@ public class ListingPanel extends JPanel implements Runnable {
 				File jarfile = new File(dir.toString(),name.toString());
 
 				if (kind == ENTRY_CREATE) {
-					removePlugin(jarfile);
 					addPlugin(jarfile);
 				} else if (kind == ENTRY_DELETE) {
 					removePlugin(jarfile);
