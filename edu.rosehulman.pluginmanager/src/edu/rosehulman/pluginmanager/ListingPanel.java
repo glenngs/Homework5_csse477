@@ -20,6 +20,8 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -107,6 +109,9 @@ public class ListingPanel extends JPanel implements Runnable {
 			URL fileURL = new URL("file:" + jarfile.getAbsolutePath());
 			System.out.println(fileURL.getPath());
 			URLClassLoader loader = new URLClassLoader(new URL[] { fileURL });
+			JarFile jf = new JarFile(jarfile.getAbsoluteFile());
+			jf.getManifest();
+			className = jf.getManifest().getMainAttributes().getValue(Attributes.Name.MAIN_CLASS);
 			Class<?> c = loader.loadClass(className);
 			Plugin p = (Plugin) c.getConstructor(java.lang.String.class).newInstance(pluginName);
 			p.setStatusStream(statusArea);
