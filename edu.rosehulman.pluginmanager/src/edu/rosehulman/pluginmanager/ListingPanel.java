@@ -57,6 +57,7 @@ public class ListingPanel extends JPanel implements Runnable {
 				if (!arg0.getValueIsAdjusting()) {
 					if (dataList.getSelectedValue() != null) {
 						label.setText(dataList.getSelectedValue().toString());
+						statusArea.println("Switched to plugin '" + dataList.getSelectedValue().toString() + "'");
 						ListingPanel.this.executionArea.renderPlugin(dataList.getSelectedValue());
 					} else {
 						// This means that the selected plugin was deleted. I'm
@@ -208,7 +209,9 @@ public class ListingPanel extends JPanel implements Runnable {
 
 				if (kind == ENTRY_CREATE) {
 					addPlugin(jarfile);
+					statusArea.println("Adding new plugin '" + stripExtension(jarfile.getName()) + "'");
 				} else if (kind == ENTRY_DELETE) {
+					statusArea.println("Removing plugin '" + stripExtension(jarfile.getName()) + "'");
 					removePlugin(jarfile);
 				}
 			}
